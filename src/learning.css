@@ -1,0 +1,145 @@
+.sets {
+    min-height: 600px;
+    font-size: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+    width: 20%;
+    padding-bottom: 50px;
+    border-left:medium;
+    border-top: thin;
+    box-shadow: 5px 10px 10px rgb(197, 197, 197);
+    background-color: rgb(5, 141, 231);
+  }
+
+  
+
+  .learningDiv {
+    min-height: 800px;
+    font-size: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+    width: 78%;
+    padding-bottom: 50px;
+    box-shadow: 5px 10px 10px 3px rgb(197, 197, 197);
+    background-color: rgb(240, 243, 245);
+  }
+
+  .learningBox {
+    width: 90%;
+    min-height: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid gray;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 100px;
+    background-color: rgb(241, 243, 245);
+  }
+
+  .cardBoxes {
+    width: 90%;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cardBox {
+    height: 120px;
+    width: 12%;
+    margin-right: 2%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: rgb(41, 154, 230);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .cardBox:hover {
+    width: 12.5%;
+    margin-right: 1.5%;
+    height: 125px;
+    margin-bottom: 15px;
+    transition: 0.2s;
+  }
+
+  .cardBox1 {
+      background-color: rgb(74, 170, 235);
+  }
+
+  .cardBoxDetails {
+    margin-top: 10px;
+    font-size: 15px;
+}
+  
+.cardBoxTitle {
+    margin-top: 10px;
+    font-size: 25px;
+}
+
+.startTestButton {
+    width: 150px;
+    height: 50px;
+    padding-top: 20px;
+    font-size: 25px;
+    background-color:rgb(236, 238, 240);
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: 50px;
+    margin-top: 3%;
+    margin-bottom: 5%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.startTestButton1 {
+    margin-top: 20px;
+    width: 150px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    background-color:rgb(240, 239, 239);
+    border-radius: 10px;
+}
+
+
+.startTestButton:hover {
+    background-color:rgb(212, 217, 221);
+    transition: 0.2s;
+}
+
+.startTestButton1:hover {
+    background-color:rgb(212, 217, 221);
+    transition: 0.2s;
+}
+
+
+.learningCardBoxesMenu {
+    margin-bottom: 50px;
+}
+
+#navbar {
+    background-color: rgb(241, 241, 241); /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: -100px; /* Hide the navbar 50 px outside of the top view */
+    width: 15%; /* Full width */
+    height: 100px;
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
+  }
+
+  #navbar1 {
+    background-color: rgb(248, 247, 247); /* Black background color */
+    position: fixed; /* Make it stick/fixed */
+    top: 0px; /* Hide the navbar 50 px outside of the top view */
+    width: 10%; /* Full width */
+    height: 100px;
+    transition: top 0.3s; /* Transition effect when sliding down (and up) */
+    box-shadow: 5px 5px 5px rgb(197, 197, 197);
+  }

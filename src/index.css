@@ -1,0 +1,115 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 5px;
+    background-color: #f6f5f8;
+
+  }
+  
+
+  .menu {
+    border-bottom: 2px solid #999;
+    padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 97%;
+    height: 100px;
+    background-color: rgb(239, 240, 241);
+    display:flex
+  }
+
+
+  .menuButton {
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    margin-top: 30px;
+    width: 20%;
+    height: 40%;
+    background-color: rgb(231, 231, 241);
+    border-radius: 10px;
+    transition: 0.3s;
+  }
+
+  .menuButton:hover {
+    background-color: rgb(233, 255, 35);
+    border-radius: 15px;
+    transition: 0.3s;
+  }
+
+  .choosingTitle {
+    font-size: 25px;
+    padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    text-align: center;
+    width: 97%;
+    height: 40px;
+    background-color: rgb(228, 233, 240);
+  }
+
+  .choosingBox {
+    min-height: 800px;
+    font-size: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 50px;
+    width: 48%;
+    padding-bottom: 50px;
+    background-color: rgb(41, 154, 230);
+  }
+
+  .translating {
+    display: flex;
+    font-size: 21px;
+    margin-left: 15%;
+    text-align: center;
+    margin-top: 15px;
+    width: 80%;
+    max-width: 800px;
+    background-color: rgb(34, 168, 135);
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  .translating:hover {
+    font-size: 22px;
+    transition: 0.3s;
+  }
+
+
+  .englishTranslating {
+    font-weight: bold;
+    border-radius: 5px;
+    width: 30%;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(236, 235, 235);
+    cursor: pointer;
+  }
+
+  .polishTranslating {
+    border-radius: 5px;
+    width: 70%;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(29, 221, 77);
+    cursor: pointer;
+  }
+
+  .englishTranslatingMarked {
+    background-color: rgb(40, 173, 16);
+  }
+
+  .polishTranslatingMarked {
+    background-color: rgb(161, 161, 161);
+  }
+
+
+  
+
+
