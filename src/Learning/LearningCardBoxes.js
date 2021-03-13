@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../index.css';
 import './learning.css';
+import GetWords from '../Api/GetWords';
 
 let boxesNumber = 5
 
@@ -23,7 +24,7 @@ class CardBox extends React.Component {
         <div className="cardBoxTitle"> Box {this.props.boxNumber + 1} </div>
         <div className="cardBoxDetails">
         Words left: {this.props.wordNumber} <br/>
-        Test time in: {this.props.testTime}h
+        Test time in: {this.props.testTime}
         </div>
       </div>        
     );
@@ -154,36 +155,34 @@ class LearningList extends React.Component {
       const { lastScrollY } = this.state; 
       const currentScrollY = window.scrollY;
   
-  
-      if (currentScrollY > lastScrollY) {
-        this.setState({ slide: '-48px' });
-      } else {
-        this.setState({ slide: '0px' });
-      }
+      if (currentScrollY > lastScrollY) this.setState({ slide: '-48px' });
+      else this.setState({ slide: '0px' });
+      
       this.setState({ lastScrollY: currentScrollY });
       console.log(this.state.lastScrollY)
     };
 
-    async getApiToLearn(status){
-  
-      const response = await fetch( "http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=" + status);
-      const data = await response.json();
-      
-      const arr = []
-      for (var key in data){
-        arr.push({english: key, polish: data[key] })
+    setStateFunc = (arr, stateVar) => {
+      switch(stateVar) {
+        case "wordsList":
+          this.setState({ wordsList: arr})
+          break;
+        case "wordsListToLearn":
+          this.setState({ wordsListToLearn: arr})
+          break;
       }
-  
-      this.setState({ wordsListToLearn: arr})
     }
-  
+
     async componentDidMount(){
-      this.getApiToLearn(0)
+      let getWords = new GetWords();
+      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
+
     }
 
     showBox = (boxNumber) => {
       //console.log("HHHHHHHHHHR " + boxNumber)
-      this.getApiToLearn(boxNumber)
+      let getWords = new GetWords();
+      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status="+ boxNumber, "wordsListToLearn", this.setStateFunc)
     }
 
     render() {
