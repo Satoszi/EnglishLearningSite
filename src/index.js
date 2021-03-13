@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import ChoosingWords from './Choosing'
-import LearningWords from './Learning'
+import LearningWords from './Learning/Learning'
 import { flushSync } from 'react-dom';
   
 class Menu extends React.Component {
