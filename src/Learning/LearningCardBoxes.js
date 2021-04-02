@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../index.css';
 import './learning.css';
-import GetWords from '../Api/GetWords';
+import GetWords from '../Api/Api.js';
 
 let boxesNumber = 5
 
@@ -37,8 +37,8 @@ class CardBoxes extends React.Component {
     super(props);
     // Nie wywołuj tutaj this.setState()!
     this.state = { clicked: [],
-    wordNumber:[31,3,4,0,0],
-    testTime: [3,12,32,120,350] };
+    wordsNumber:[20,3,4,0,0],
+    timeUntilTestIsAvailable: [3,12,32,120,350] };
   }
 
   componentDidMount(){
@@ -51,7 +51,7 @@ class CardBoxes extends React.Component {
     this.setState({clicked: clickedArr})
   }
 
-  showBox = (boxNumber) => {
+  showSet = (boxNumber) => {
     //console.log("KKKKKKKKK " + boxNumber)
     let clickedArr = this.state.clicked
     for (let i = 0; i < boxesNumber; i++){
@@ -59,7 +59,7 @@ class CardBoxes extends React.Component {
     }
     clickedArr[boxNumber] = true
     this.setState({clicked: clickedArr})
-    this.props.showBox(boxNumber)
+    this.props.showSet(boxNumber)
   }
 
   render() {
@@ -67,11 +67,11 @@ class CardBoxes extends React.Component {
     for (let i = 0; i < boxesNumber; i++){
       cardBoxes.push(<CardBox key={i} 
                               index = {i}
-                              showBox = {this.showBox} 
+                              showBox = {this.showSet} 
                               boxNumber = {i}
                               clicked = {this.state.clicked[i]}
-                              wordNumber = {this.state.wordNumber[i]}
-                              testTime = {this.state.testTime[i]} />)
+                              wordNumber = {this.state.wordsNumber[i]}
+                              testTime = {this.state.timeUntilTestIsAvailable[i]} />)
     }
     return (
       <div className="cardBoxes"> 
@@ -141,11 +141,6 @@ class LearningList extends React.Component {
       scrolled: window.pageYOffset
     }
 
-    componentWillMount() {
-      // When this component mounts, begin listening for scroll changes
-      window.addEventListener('scroll', this.handleScroll);
-    }
-  
     componentWillUnmount() {
       // If this component is unmounted, stop listening
       window.removeEventListener('scroll', this.handleScroll);
@@ -176,11 +171,11 @@ class LearningList extends React.Component {
     async componentDidMount(){
       let getWords = new GetWords();
       getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
+      window.addEventListener('scroll', this.handleScroll); //listening to scroll
 
     }
-
-    showBox = (boxNumber) => {
-      //console.log("HHHHHHHHHHR " + boxNumber)
+ 
+    showSet = (boxNumber) => {
       let getWords = new GetWords();
       getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status="+ boxNumber, "wordsListToLearn", this.setStateFunc)
     }
@@ -190,8 +185,8 @@ class LearningList extends React.Component {
       let hide = "navbar"
       if (this.state.lastScrollY > 500) hide = "navbar1"
       return (
-        <div  > 
-          <CardBoxes showBox={this.showBox}/>
+        <div> 
+          <CardBoxes showSet={this.showSet}/>
           <div className="learningBox">
 
             <div className="learningCardBoxesMenu">

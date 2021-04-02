@@ -64,9 +64,10 @@ body {
   }
 
   .translating {
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     font-size: 21px;
-    margin-left: 15%;
     text-align: center;
     margin-top: 15px;
     width: 80%;
@@ -109,7 +110,78 @@ body {
     background-color: rgb(161, 161, 161);
   }
 
-
+  .addingToSetMenu {
+    width: 90%;
+    background-color: rgb(29, 221, 77);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    padding-top: 5px;
+    height: 400px;
+    display:flex
+  }
   
+  .SetsListInChoosingBox {
+    width: 55%;
+    background-color: rgb(255, 255, 255);
+    margin-top: 20px;
+    margin-left: 5%;
+    height: 350px;
+    overflow:auto;
+  }
 
+  .createSetButton {
+    width: 85%;
+    height: 60px;
+    font-size: 25px;
+    background-color:rgb(236, 238, 240);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-left: 5%;
+    padding: 5px;
+    padding-top: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.createSetButton:hover {
+  background-color:rgb(212, 217, 221);
+  transition: 0.2s;
+}
+
+.setBox {
+  background-color: rgb(235, 235, 235);
+  margin-left: 20px;
+  width: 80%;
+  padding-top: 5px;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  display:flex;
+  transition: 0.2s;
+}
+
+.setBox:hover {
+  background-color:rgb(212, 217, 221);
+  transition: 0.2s;
+}
+
+
+.CreatingSetBox  {
+  background-color: rgb(255, 255, 255);
+  margin-left: 1%;
+  width: 38%;
+  padding-top: 5px;
+  height: 200px;
+  margin-top: 20px;
+}
+
+.CreatingSetBoxInput  {
+  background-color: rgb(219, 233, 226);
+  font-size: 20px;
+  width: 70%;
+  height: 35px;
+  margin-top: 20px;
+}
 
