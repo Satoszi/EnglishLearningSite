@@ -30,9 +30,9 @@ export class SetsInChoosingBox extends React.Component{
     }
 
     render(){
-
-        let setsListToShow = this.state.sets.map(e => {return (
-        <div  className="setBox" key = {e}> {e} </div>)
+        
+        let setsListToShow = this.state.sets.map(setName => {return (
+        <div  className="setBox" onClick={() => this.props.changeLearningSetCallBack(setName) } key = {setName}> {setName} </div>)
         })  
 
         return(

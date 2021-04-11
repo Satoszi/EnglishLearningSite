@@ -1,31 +1,18 @@
 import React from "react";
 import '../index.css';
 import GetWords from '../Api/Api.js';
-
-export class SetsInLearningSet extends React.Component{
-
-    state = {
-        sets: []
-    }
-    
-    CallBackSets = (arr) => {
-        this.setState({sets: arr});
-    }
-
-    async componentDidMount(){
-        let createSet = new GetWords();
-        let userId = 9
-        createSet.getSets(userId, this.CallBackSets)
-    }
+             
+export class SetsInLearningSets extends React.Component{
 
     render(){
-        let setsListToShow = this.state.sets.map(e => {return (
-            <div  className="setBox" key = {e}> {e} </div>)
+        let setsListToShow = this.props.sets.map(e => {return (
+            <div onClick={()=>this.props.wordsToLearnBySetAndState(e)} className="setBox" key = {e}> {e} </div>)
             })  
         return(
-            {setsListToShow}
+            <div>{setsListToShow}</div>
+            
         )
     }
 }
-
-export default SetsInLearningSet
+               
+export default SetsInLearningSets

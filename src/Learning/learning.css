@@ -50,13 +50,13 @@
   }
 
   .cardBox {
+    font-size: 14px;
     height: 120px;
     width: 12%;
     margin-right: 2%;
     margin-top: 30px;
     margin-bottom: 20px;
     border-radius: 10px;
-    background-color: rgb(41, 154, 230);
     cursor: pointer;
     transition: 0.2s;
   }
@@ -70,12 +70,20 @@
   }
 
   .cardBox1 {
-      background-color: rgb(74, 170, 235);
+    font-size: 14px;
+    font-weight: bold;
+    height: 130px;
+    width: 12.5%;
+    margin-right: 1.5%;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
   }
 
   .cardBoxDetails {
     margin-top: 10px;
-    font-size: 15px;
 }
   
 .cardBoxTitle {
@@ -142,4 +150,28 @@
     height: 100px;
     transition: top 0.3s; /* Transition effect when sliding down (and up) */
     box-shadow: 5px 5px 5px rgb(197, 197, 197);
+  }
+
+
+  .knownWordClass {
+    display: flex;
+    background-color: rgb(228, 253, 232);
+    margin-left: 40px;
+    border-radius: 5px;
+    width: 100px;
+    cursor: pointer
+  }
+  .knownWordClassMarked {
+    background-color: rgb(57, 238, 87);
+  }
+  .notKnownWordClass {
+    display: flex;
+    background-color: rgb(251, 237, 237);
+    margin-left: 20px;
+    border-radius: 5px;
+    width: 100px;
+    cursor: pointer
+  }
+  .notKnownWordClassMarked {
+    background-color: rgb(241, 56, 56);
   }

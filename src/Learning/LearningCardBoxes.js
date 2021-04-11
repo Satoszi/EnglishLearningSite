@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import '../index.css';
 import './learning.css';
 import GetWords from '../Api/Api.js';
+import LearningTest from './LearningTest.js';
 
-let boxesNumber = 5
 
 class CardBox extends React.Component {
   
@@ -14,16 +14,17 @@ class CardBox extends React.Component {
   }
 
   render() {
+
     let clickedClass = "cardBox"
-    let yellow2 = this.props.index * 60
+    let green = this.props.boxNumber * 60
     
-    let yellow = "rgb(250, " + yellow2 + ", 0)"
-    if (this.props.clicked == true) clickedClass = "cardBox cardBox1"
+    let boxColor = "rgb(250, " + green + ", 0)"
+    if (this.props.clicked == true) clickedClass = "cardBox1"
     return (
-      <div className={clickedClass} onClick={()=>this.markBox()} style={{background: yellow}}> 
+      <div className={clickedClass} onClick={()=>this.markBox()} style={{background: boxColor}}> 
         <div className="cardBoxTitle"> Box {this.props.boxNumber + 1} </div>
-        <div className="cardBoxDetails">
-        Words left: {this.props.wordNumber} <br/>
+        <div >
+        Words left: {this.props.wordsNumber} <br/>
         Test time in: {this.props.testTime}
         </div>
       </div>        
@@ -37,40 +38,20 @@ class CardBoxes extends React.Component {
     super(props);
     // Nie wywołuj tutaj this.setState()!
     this.state = { clicked: [],
-    wordsNumber:[20,3,4,0,0],
     timeUntilTestIsAvailable: [3,12,32,120,350] };
   }
 
-  componentDidMount(){
-    
-    let clickedArr = []
-    clickedArr.push(true)
-    for (let i = 1; i < boxesNumber; i++){
-      clickedArr.push(false)
-    }
-    this.setState({clicked: clickedArr})
-  }
 
-  showSet = (boxNumber) => {
-    //console.log("KKKKKKKKK " + boxNumber)
-    let clickedArr = this.state.clicked
-    for (let i = 0; i < boxesNumber; i++){
-      clickedArr[i] = false
-    }
-    clickedArr[boxNumber] = true
-    this.setState({clicked: clickedArr})
-    this.props.showSet(boxNumber)
-  }
 
   render() {
+    
     let cardBoxes = []
-    for (let i = 0; i < boxesNumber; i++){
-      cardBoxes.push(<CardBox key={i} 
-                              index = {i}
-                              showBox = {this.showSet} 
+    for (let i = 0; i < this.props.boxesNumber; i++){
+      cardBoxes.push(<CardBox key={i}   
+                              showBox = {this.props.callBackSetFlashBox} 
                               boxNumber = {i}
-                              clicked = {this.state.clicked[i]}
-                              wordNumber = {this.state.wordsNumber[i]}
+                              clicked = {this.props.clicked[i]}
+                              wordsNumber = {this.props.wordsNumberInSet[i]}
                               testTime = {this.state.timeUntilTestIsAvailable[i]} />)
     }
     return (
@@ -135,12 +116,13 @@ class LearningList extends React.Component {
 
   export class LearningCardBoxes extends React.Component {
   
-    
-    state = {
+      state = {
+      mode: "learning",
       wordsListToLearn: [],
       scrolled: window.pageYOffset
     }
 
+/*  
     componentWillUnmount() {
       // If this component is unmounted, stop listening
       window.removeEventListener('scroll', this.handleScroll);
@@ -157,7 +139,12 @@ class LearningList extends React.Component {
       console.log(this.state.lastScrollY)
     };
 
-    setStateFunc = (arr, stateVar) => {
+    //do usuniecia setStateFunc2
+
+    
+    e
+    
+    setStateFunc2 = (arr, stateVar) => {
       switch(stateVar) {
         case "wordsList":
           this.setState({ wordsList: arr})
@@ -168,40 +155,65 @@ class LearningList extends React.Component {
       }
     }
 
-    async componentDidMount(){
-      let getWords = new GetWords();
-      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
-      window.addEventListener('scroll', this.handleScroll); //listening to scroll
-
+    setStateFunc = (arr) => {
+      this.setState({ wordsListToLearn: arr})
     }
- 
+
+    async getWordsToLearn(){
+      let getWords = new GetWords();
+      //getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
+      getWords.wordsToLearnBySet(9, 0, this.props.setName, this.setStateFunc)
+      window.addEventListener('scroll', this.handleScroll); //listening to scroll
+    }
+
+    async componentDidMount(){
+      this.getWordsToLearn();
+    }
+    
     showSet = (boxNumber) => {
       let getWords = new GetWords();
-      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status="+ boxNumber, "wordsListToLearn", this.setStateFunc)
+      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status="+ boxNumber, "wordsListToLearn", this.setStateFunc);
+    }
+    */
+    changeModeToTesting = () => {
+      this.setState({mode: "testing"})
     }
 
+    changeModeToLearning_CallBack = () => {
+      this.setState({mode: "learning"})
+    }
     render() {
 
+      let mode = null;
+      if (this.state.mode === "learning") mode = <LearningList wordsListToShow = {this.props.wordsListToLearn}/>
+      else mode =  <LearningTest 
+                    wordsListToShow = {this.props.wordsListToLearn}
+                    changeModeToLearning_CallBack = {this.changeModeToLearning_CallBack} />
+
+      
       let hide = "navbar"
       if (this.state.lastScrollY > 500) hide = "navbar1"
+
       return (
         <div> 
-          <CardBoxes showSet={this.showSet}/>
+          <CardBoxes 
+          callBackSetFlashBox={this.props.callBackSetFlashBox}
+          wordsNumberInSet = {this.props.wordsNumberInSet}
+          clicked = {this.props.clicked}
+          boxesNumber = {this.props.boxesNumber} />
           <div className="learningBox">
 
             <div className="learningCardBoxesMenu">
 
             
-                <div  className = "startTestButton"> Start Test 
+                <div  className = "startTestButton" onClick = {() => this.changeModeToTesting()}> Start Test
                 <div id={hide}>
                   <div className = "startTestButton1"> Start Test </div>
                 </div>
                 </div>
-            </div>
+            </div>  
 
-            
-
-            <div><LearningList wordsListToShow = {this.state.wordsListToLearn}/> </div>
+            <div> {mode} </div>
 
           </div>
         </div>        

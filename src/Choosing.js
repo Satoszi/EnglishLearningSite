@@ -29,9 +29,26 @@ export class ChoosingWords extends React.Component {
 
   state = {
     wordsList: [],
-    wordsListToLearn: []
+    wordsListToLearn: [],
+    currentLearningSet: "nowy3",
   }
 
+  async componentDidMount(){
+    let getWords = new GetWords();
+    getWords.getAp("http://bitex122.vot.pl/getuserwordsnotlearned.php?userid=9&from= " + 100 + "&to= " + 135, "wordsList", this.setStateFunc)
+    //getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
+    let userId = 9;
+    this.setWordsListToLearn(userId, this.state.currentLearningSet)
+  }
+
+  setWordsListToLearn = (userId, setName) => {
+    let getWords = new GetWords();
+    getWords.wordsToLearnBySet(userId, setName, this.setWordsListToLearn_CallBack)
+  }
+
+  setWordsListToLearn_CallBack = (arr) => {
+    this.setState({ wordsListToLearn: arr})
+  }
 
   setStateFunc = (arr, stateVar) => {
     
@@ -48,11 +65,7 @@ export class ChoosingWords extends React.Component {
     }
   }
 
-  async componentDidMount(){
-    let getWords = new GetWords();
-    getWords.getAp("http://bitex122.vot.pl/getuserwordsnotlearned.php?userid=9&from= " + 100 + "&to= " + 135, "wordsList", this.setStateFunc)
-    getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
-  }
+
 
   moveElement = (english) =>{
       this.setState({ wordsListToLearn: this.state.wordsListToLearn.concat(this.state.wordsList.filter(function(element) { 
@@ -61,8 +74,9 @@ export class ChoosingWords extends React.Component {
                       wordsList: this.state.wordsList.filter(function(element) { 
                       return element.english !== english  })       
   });
-  fetch( "http://bitex122.vot.pl/insertwordforuser.php?userid=9&engword=" + english + "&status=0");
-
+  //fetch( "http://bitex122.vot.pl/insertwordforuser.php?userid=9&engword=" + english + "&status=0");
+  let userId = 9
+  fetch( "http://bitex122.vot.pl/insertwordtoset.php?userid=" + userId + "&engword=" + english + "&setname=" + this.state.currentLearningSet);
   }
 
 
@@ -75,6 +89,13 @@ export class ChoosingWords extends React.Component {
   });
   fetch( "http://bitex122.vot.pl/deletefromstatus.php?userid=9&engword=" + english); //tu brakuje statusu ale to z lenistwa
 
+  }
+
+  changeLearningSetCallBack = (setName) =>{
+    console.log("setname = " + setName)
+    this.setState({currentLearningSet: setName})
+    let userId = 9
+    this.setWordsListToLearn(userId, setName)
   }
 
   render() {
@@ -94,8 +115,12 @@ export class ChoosingWords extends React.Component {
 
           <div className="choosingBox"> 
             <div> Choosed words  </div> <br/>
-            <SetsInChoosingBox />
-            <WordsList wordsList = {this.state.wordsListToLearn} moveElement={this.moveElementBack}/>
+            <SetsInChoosingBox 
+            changeLearningSetCallBack = {this.changeLearningSetCallBack} />
+            Set: {this.state.currentLearningSet}
+            <WordsList 
+            wordsList = {this.state.wordsListToLearn} 
+            moveElement={this.moveElementBack}/>
           </div> 
 
         </div>
