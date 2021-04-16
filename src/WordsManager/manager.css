@@ -1,0 +1,107 @@
+.Manager {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(233, 233, 233);
+}
+
+:root {
+    --ManageContainersColor: #fafafa;
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--ManageContainersColor);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+.CompleteListsManager{
+    margin: 0.5%;
+    width: 39%;
+    height: 350px;
+    margin-bottom: 0px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    
+}
+
+.YourListsManager{
+    margin: 0.5%;
+    width: 60%;
+    height: 350px;
+    margin-bottom: 0px; 
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    box-shadow: inset -5px -10px 10px #ffffff
+}
+
+.CompleteListsContent{
+    margin: 0.5%;
+    width: 39%;
+    height: 590px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+}
+
+
+
+.YourListsContent{
+    margin: 0.5%;
+    width: 60%;
+    height: 590px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+}
+
+
+
+.managerMiniBar {
+    width: 100%;
+    height: 30px;
+    border-bottom: dotted rgb(189, 189, 189) 1px;
+    font-size: 25px;
+}
+
+.yourList {
+    float: left;
+    width: 170px;
+    height: 45px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px grey;
+    background-color: rgb(243, 243, 243);
+    font-size: 15px;
+    margin: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.yourList:hover {
+    background-color: rgb(230, 230, 230);
+}
+
+.addNew {
+    font-size: 25px;
+}

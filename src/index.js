@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import ChoosingWords from './Choosing'
 import LearningWords from './Learning/Learning'
+import WordsManager from './WordsManager/WordsManager'
 import { flushSync } from 'react-dom';
-  
+
 class Menu extends React.Component {
 
   handleChangeView(viewName){
@@ -28,7 +29,7 @@ function ReturnView (props){
   if (props.viewName == 'Learning')
     return <LearningWords/>;
   if (props.viewName == 'Choosing')
-    return <ChoosingWords/>;
+    return <WordsManager/>
 }
 
 
