@@ -9,10 +9,10 @@ export class GetWords  {
       for (var key in data){
         arr.push({english: key, polish: data[key] })
       }
-      console.log(stateVar)
+      //console.log(stateVar)
       switch(stateVar) {
         case "wordsList":
-          console.log("halo0")
+          //console.log("halo0")
           func(arr, stateVar)
           break;
         case "wordsListToLearn":
