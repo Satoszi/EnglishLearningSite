@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ChoosingWords from './Choosing'
+//import ChoosingWords from './Choosing'
 import LearningWords from './Learning/Learning'
 import WordsManager from './WordsManager/WordsManager'
 import { flushSync } from 'react-dom';

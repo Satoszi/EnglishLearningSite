@@ -55,10 +55,13 @@ export class YourListsManager extends React.Component {
 
   CallBackSets = (arr) => { this.setState({sets: arr});}
 
+  getWordsList = () => {
+    let getLists = new GetWords();
+    let userId = 9
+    getLists.getSets(userId, this.CallBackSets)
+  }
   async componentDidMount(){
-      let getLists = new GetWords();
-      let userId = 9
-      getLists.getSets(userId, this.CallBackSets)
+    this.getWordsList();
   }
 
   setWordsListToLearn_CallBack = (arr) => {
@@ -83,11 +86,14 @@ export class YourListsManager extends React.Component {
    }
 
    removeList = (listName) => {
-    let createList = new GetWords();
+    let removeList = new GetWords();
     let userId = 9;
-    //removeList.newSet(userId, listName)
-    console.log("removing " + listName)
-    //this.setState({sets: this.state.sets.   concat?  (listName)})
+    removeList.removeList(userId, listName)
+    this.setState({currentList: null})
+    this.props.setCurrentList_CallBack([], null);
+    //warto time out dodac
+    setTimeout(function(){this.getWordsList();}.bind(this),100);
+    
    }
 
     render() {
@@ -100,7 +106,8 @@ export class YourListsManager extends React.Component {
               listName = {setName}
               listNameClicked = {this.state.listNameClicked}
               clickedList = {this.clickedList}
-              removeList = {this.removeList}/>
+              removeList = {this.removeList}
+              isExitButton = {true}/>
           </div>)
         })  
       

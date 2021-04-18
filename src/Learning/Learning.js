@@ -5,6 +5,7 @@ import './learning.css';
 import LearningCardBoxes from './LearningCardBoxes'
 import SetsInLearningSets from './SetInLearningSets'
 import GetWords from '../Api/Api.js';
+import ListObject from '../WordsManager/ListObject'
 
 let boxesNumber = 5;
 
@@ -16,6 +17,7 @@ let boxesNumber = 5;
       wordsNumberInSet:[],
       sets: [],
       clicked: [],
+      listNameClicked: null,
     }
 
     //*********** Troche tu nagmatwane bo trzeba sie zastanowić czy te async są potrzebne
@@ -83,18 +85,32 @@ let boxesNumber = 5;
       this.setState({clicked: clickedArr})
   }
 
+  clickedList = (listName) => {
+    this.setCurrentSetAsync(listName);
+    this.setState({listNameClicked: listName})
+  }
+
     render() {
+
+      let setsListToShow = this.state.sets.map(setName => {return (
+        <div 
+            key = {setName}>
+            <ListObject 
+            listName = {setName}
+            listNameClicked = {this.state.listNameClicked}
+            clickedList = {this.clickedList}
+            removeList = {this.removeList}
+            isExitButton = {false}/>
+        </div>)
+      })
 
       return (
         <div> 
             {/* <div className="choosingTitle"> Learning words </div> */}
             <div style={{display:"flex"}}>
                 <div className="sets">
-                  <SetsInLearningSets 
-                  wordsToLearnBySetAndState = {this.setCurrentSetAsync} 
-                  sets = {this.state.sets} /> 
+                {setsListToShow}
                 </div>
-
                  <div className="learningDiv">
                   <LearningCardBoxes 
     

@@ -11,12 +11,15 @@ class ListObject extends React.Component {
         <div  className = {this.props.listNameClicked === this.props.listName ? "yourList yourListChoosen" : "yourList" }  
         onClick = {() => this.props.clickedList(this.props.listName)}> 
           {this.props.listName}
-        </div>    
+        </div>
+        {this.props.isExitButton?
         <div 
         className = "removeButton removeListButton" 
         onClick = {() => this.props.removeList(this.props.listName)}> 
          X 
-        </div>    
+        </div>  
+        :""
+        }  
         </div>
        );
      }

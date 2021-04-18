@@ -1,4 +1,7 @@
+const BASE_URL = "http://bitex122.vot.pl/";
+
 export class GetWords  {
+
 
 
     async getAp(url, stateVar, func){
@@ -79,6 +82,11 @@ export class GetWords  {
     newSet = (userId, setName) => {
       fetch( "http://bitex122.vot.pl/insertnewset.php?userid=9&setname=" + setName);
     }
+
+    removeList = (userId, setName) => {
+      fetch( "http://bitex122.vot.pl/removeset.php?userid=9&setname=" + setName);
+    }
+
   }
 
 

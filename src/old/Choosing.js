@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import GetWords from './Api/Api.js';
+import GetWords from '../Api/Api.js';
 import SetsInChoosingBox from './SetsInChoosingBox'
 
 class WordsList extends React.Component {

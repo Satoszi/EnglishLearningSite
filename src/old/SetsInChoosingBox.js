@@ -1,6 +1,6 @@
 import React from "react";
 import './index.css';
-import GetWords from './Api/Api.js';
+import GetWords from '../Api/Api.js';
 
 
 

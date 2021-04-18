@@ -137,7 +137,7 @@
     cursor:default;
     height: 77px;
     width: 345px;
-    background-image: linear-gradient(to bottom right, rgb(223, 223, 223), rgb(240, 240, 240));
+    background-image: linear-gradient(to bottom right, rgba(223, 223, 223, 0.877), rgba(240, 240, 240, 0.89));
     left: 38%;
     top: 18%;
     border-radius: 15px;
@@ -215,6 +215,10 @@
     color: white;
     background-color: rgb(204, 30, 30); 
     cursor: pointer;
+}
+
+.removeButton:hover{
+    background-color: rgb(245, 39, 39); 
 }
 
 .removeListButton{
