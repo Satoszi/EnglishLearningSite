@@ -1,6 +1,6 @@
 import React from 'react';
 import './manager.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 import ListObject from './ListObject'
 import Popup from './AddNewListPopup';
 
@@ -56,9 +56,8 @@ export class YourListsManager extends React.Component {
   CallBackSets = (arr) => { this.setState({sets: arr});}
 
   getWordsList = () => {
-    let getLists = new GetWords();
-    let userId = 9
-    getLists.getSets(userId, this.CallBackSets)
+    let getLists = new Api();
+    getLists.getSets(this.CallBackSets)
   }
   async componentDidMount(){
     this.getWordsList();
@@ -66,32 +65,25 @@ export class YourListsManager extends React.Component {
 
   setWordsListToLearn_CallBack = (arr) => {
     this.props.setCurrentList_CallBack(arr, this.state.currentList)
-  }
+  }    
 
   setCurrentList = (listName) => {
-    let getWords = new GetWords();
-    let userId = 9;
+    let getWords = new Api();
     this.setState({currentList: listName})
-    getWords.wordsToLearnBySet(userId, listName, this.setWordsListToLearn_CallBack)
+    getWords.wordsToLearnBySet(listName, this.setWordsListToLearn_CallBack)
   }
 
   createList = (listName) => {
-    let createList = new GetWords();
-    let userId = 9;
-    createList.newSet(userId, listName)
-    // do przeniesienia do popupu
-    //let id = "SetInput"
-    //document.getElementById(id).value = ""
+    let createList = new Api();
+    createList.newSet(listName)
     this.setState({sets: this.state.sets.concat(listName)})
    }
 
    removeList = (listName) => {
-    let removeList = new GetWords();
-    let userId = 9;
-    removeList.removeList(userId, listName)
+    let removeList = new Api();
+    removeList.removeList(listName)
     this.setState({currentList: null})
     this.props.setCurrentList_CallBack([], null);
-    //warto time out dodac
     setTimeout(function(){this.getWordsList();}.bind(this),100);
     
    }

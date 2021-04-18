@@ -1,32 +1,39 @@
-const BASE_URL = "http://bitex122.vot.pl/";
+import {API} from '../constants';
+const userId = 9;
+export class Api  {
 
-export class GetWords  {
+    async getAllWords(cb){
+      let rangeFrom = 100;
+      let rangeTo = 215
+      //const url = API.BASE_URL + 'getuserwordsnotlearned.php?userid=${userId}&from= ' + rangeFrom + "&to= " + rangeTo;
+      const url = new URL (API.BASE_URL + "getuserwordsnotlearned.php")
+      url.searchParams.append("userid", userId)
+      url.searchParams.append("from", rangeFrom)
+      url.searchParams.append("to", rangeTo)
 
-
-
-    async getAp(url, stateVar, func){
       const response = await fetch( url);
       const data = await response.json();
       
       const arr = []
-      for (var key in data){
-        arr.push({english: key, polish: data[key] })
-      }
-      //console.log(stateVar)
-      switch(stateVar) {
-        case "wordsList":
-          //console.log("halo0")
-          func(arr, stateVar)
-          break;
-        case "wordsListToLearn":
-          func(arr, stateVar)
-          break;
-      }
+      for (var key in data) arr.push({english: key, polish: data[key] })
+      cb(arr)
     }
 
-    async wordsToLearnBySetAndState(userId, status, setName, callBack){
+    async addWordToSuite(english, Suite){
+      const url = API.BASE_URL + "insertwordtoset.php?userid=" + userId + "&engword=" + english + "&setname=" + Suite;
+      fetch(url);
+    }
+
+    async removeWordFromSuite(english, Suite){
       
-      const url = "http://bitex122.vot.pl/getwordsbystatusbyset.php?userid=" + userId + "&status= " + status + "&setname=" + setName;
+      const url = API.BASE_URL + "deletefromstatus.php?userid=" + userId + "&engword=" + english; //Nie trzeba statusu
+      fetch(url);
+    }
+
+
+    async wordsToLearnBySetAndState(status, setName, callBack){
+      
+      const url = API.BASE_URL + "getwordsbystatusbyset.php?userid=" + userId + "&status= " + status + "&setname=" + setName;
       const response = await fetch( url);
       const data = await response.json();
       
@@ -37,9 +44,9 @@ export class GetWords  {
       callBack(wordsListToLearnBySet)
     }
 
-    async wordsToLearnBySet(userId, setName, callBack){
+    async wordsToLearnBySet(setName, callBack){
       
-      const url = "http://bitex122.vot.pl/getwordsbyset.php?userid=" + userId + "&setname=" + setName;
+      const url = API.BASE_URL + "getwordsbyset.php?userid=" + userId + "&setname=" + setName;
       const response = await fetch( url);
       const data = await response.json();
       
@@ -51,9 +58,8 @@ export class GetWords  {
     }
 
 
-    async howManyWordsPerSet(userId, setName, callBack){
-
-      const url = "http://bitex122.vot.pl/howManyWordsPerSet.php?userid=" + userId + "&setname=" + setName;
+    async howManyWordsPerSet(setName, callBack){
+      const url = API.BASE_URL + "howManyWordsPerSet.php?userid=" + userId + "&setname=" + setName;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -67,8 +73,9 @@ export class GetWords  {
     }
 
 
-    async getSets(userId, callBack){
-      const response = await fetch("http://bitex122.vot.pl/getsets.php?userid=9");
+    async getSets(callBack){
+
+      const response = await fetch(API.BASE_URL + "getsets.php?userid=" + userId);
       const data = await response.json();
 
       const arr = []
@@ -79,20 +86,14 @@ export class GetWords  {
       callBack(arr)
     }
 
-    newSet = (userId, setName) => {
-      fetch( "http://bitex122.vot.pl/insertnewset.php?userid=9&setname=" + setName);
+    newSet = (setName) => {
+      fetch( API.BASE_URL + "insertnewset.php?userid=" + userId + "&setname=" + setName);
     }
 
-    removeList = (userId, setName) => {
-      fetch( "http://bitex122.vot.pl/removeset.php?userid=9&setname=" + setName);
+    removeList = (setName) => {
+      fetch( API.BASE_URL + "removeset.php?userid=" + userId + "&setname=" + setName);
     }
 
   }
 
-
-
-
-
-
-
-  export default GetWords
+  export default Api

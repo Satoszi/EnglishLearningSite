@@ -1,6 +1,6 @@
 import React from 'react';
 import './manager.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 import WordObcjectsList from './WordObcjetsList'
 
 

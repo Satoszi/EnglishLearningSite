@@ -36,7 +36,7 @@ class Translating extends React.Component {
             markedClassPol = "englishTranslating polishTranslatingMarked"
         }
 
-        if (this.props.wordsListToShow !== null) 
+        if (this.props.wordsList !== null) 
         wordsListToShow = 
         <div className="testChecking">
             <div onClick={()=>this.markTranslating()}  className="testTranslating">
@@ -55,30 +55,30 @@ class Translating extends React.Component {
     }
   } 
   
-  export class LearningTest extends React.Component {
+  export class QuizMode extends React.Component {
     
     state = {
-        ifKnownWordArr: []
+        isWordKnownList: []
     }
 
     appendKnownWord = (knownWord) => {
-        if (!this.state.ifKnownWordArr.includes(knownWord))
-        this.setState({ ifKnownWordArr: this.state.ifKnownWordArr.concat(knownWord) });
-        console.log("appendKnownWord = " + this.state.ifKnownWordArr)
+        if (!this.state.isWordKnownList.includes(knownWord))
+        this.setState({ isWordKnownList: this.state.isWordKnownList.concat(knownWord) });
+        console.log("appendKnownWord = " + this.state.isWordKnownList)
     }
 
     popNotKnownWord = (knownWord) => {
-        this.setState({ifKnownWordArr: this.state.ifKnownWordArr.filter(function(element) { 
+        this.setState({isWordKnownList: this.state.isWordKnownList.filter(function(element) { 
         return element !== knownWord  }) });
-        console.log("popNotKnownWord = " + this.state.ifKnownWordArr)
+        console.log("popNotKnownWord = " + this.state.isWordKnownList)
     }
 
     moveWordsToProperFlashBoxInDatabase = () => {
 
         let userId = 9;
         let words = [];
-        for (var key in this.state.ifKnownWordArr){
-          words[key.toString()] = this.state.ifKnownWordArr[key]
+        for (var key in this.state.isWordKnownList){
+          words[key.toString()] = this.state.isWordKnownList[key]
         }
 
         let data = {'words': words, 'userid': 9};
@@ -93,11 +93,7 @@ class Translating extends React.Component {
               },
             body: JSON.stringify(data)
           })
-          //.then(res => {
-          //  console.log("Request complete! response:", res);
-          //}).catch((error) => {
-          //  console.error('Error:', error);
-          //});
+                  
 
     }
 
@@ -108,26 +104,26 @@ class Translating extends React.Component {
 
     render() {
       let wordsListToShow = null
-      if (this.props.wordsListToShow !== null) 
-      wordsListToShow = this.props.wordsListToShow.map(e => {return (
-            
+      if (this.props.wordsList !== null) 
+      wordsListToShow = this.props.wordsList.map(e => {return (
             <Translating 
             key = {e.english} 
             english = {e.english} 
             polish = {e.polish} 
             appendKnownWord = {this.appendKnownWord}
             popNotKnownWord = {this.popNotKnownWord} />
-
         )
     })
       return (
         <div> 
           <div  className = "startTestButton" 
-                onClick = {() => this.saveTest()}> Stop Test </div>
+                onClick = {() => this.saveTest()}> 
+                Save Test 
+          </div>
           {wordsListToShow}
         </div>        
       );
     }
   } 
 
-  export default LearningTest
+  export default QuizMode

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 import SetsInChoosingBox from './SetsInChoosingBox'
 
 class WordsList extends React.Component {
@@ -34,7 +34,7 @@ export class ChoosingWords extends React.Component {
   }
 
   async componentDidMount(){
-    let getWords = new GetWords();
+    let getWords = new Api();
     getWords.getAp("http://bitex122.vot.pl/getuserwordsnotlearned.php?userid=9&from= " + 100 + "&to= " + 135, "wordsList", this.setStateFunc)
     //getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
     let userId = 9;
@@ -42,7 +42,7 @@ export class ChoosingWords extends React.Component {
   }
 
   setWordsListToLearn = (userId, setName) => {
-    let getWords = new GetWords();
+    let getWords = new Api();
     getWords.wordsToLearnBySet(userId, setName, this.setWordsListToLearn_CallBack)
   }
 

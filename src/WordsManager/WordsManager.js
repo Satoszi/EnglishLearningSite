@@ -7,82 +7,77 @@ import CompleteListsManager from './CompleteListsManager'
 import YourListsContent from './YourListsContent'
 import YourListsManager from './YourListsManager'
 
+function addWordToSuite(wordsListToLearn, wordsList, english){
+  return (
+    wordsListToLearn.concat(wordsList.filter(function(element) { 
+    return element.english == english  }))
+  )
+}
+
+function removeWordFromSuite(wordsListToLearn, english){
+  return (
+    wordsListToLearn.filter(function(element) { 
+      return element.english !== english  }) 
+  )
+}
 
 
 export class WordsManager extends React.Component {
-    state = {
-        wordsList: [],
-        wordsListToLearn: [],
-        currentLearningList: null,
-      }
 
-      setCurrentList_CallBack = (arr, listName) => {
-        this.setState({ wordsListToLearn: arr})
-        this.setState({ currentLearningList: listName})
-      }
+  state = {
+    wordsList: [],
+    wordsListToLearn: [],
+    currentLearningList: null,
+  }
 
-        //TODO clean code
-    async componentDidMount(){
-        let getWords = new GetWords();
-        getWords.getAp("http://bitex122.vot.pl/getuserwordsnotlearned.php?userid=9&from= " + 100 + "&to= " + 215, "wordsList", this.setStateFunc)
-        //getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
-        let userId = 9;
-    }
+  async componentDidMount(){
+    let getWords = new GetWords();
+    getWords.getAllWords(this.getWordsList_cb)
+  }
 
-    //Todo clean code
-    setStateFunc = (arr, stateVar) => {
-        switch(stateVar) {
-        case "wordsList":
-            this.setState({ wordsList: arr})
-            break;
-        case "wordsListToLearn":
-            this.setState({ wordsListToLearn: arr})
-            break;
-        }
-    }
-    
-    moveElement = (english) =>{
-        this.setState({ wordsListToLearn: this.state.wordsListToLearn.concat(this.state.wordsList.filter(function(element) { 
-                        return element.english == english  })),
-    
-                        wordsList: this.state.wordsList.filter(function(element) { 
-                        return element.english !== english  })       
-      });
-      //fetch( "http://bitex122.vot.pl/insertwordforuser.php?userid=9&engword=" + english + "&status=0");
-      let userId = 9
-      fetch( "http://bitex122.vot.pl/insertwordtoset.php?userid=" + userId + "&engword=" + english + "&setname=" + this.state.currentLearningList);
-      }
+  getWordsList_cb = (arr) => { this.setState({ wordsList: arr}) }
 
-    
-      moveElementBack = (english) =>{
-        this.setState({ wordsList: this.state.wordsList.concat(this.state.wordsListToLearn.filter(function(element) { 
-                        return element.english == english  })),
-    
-                        wordsListToLearn: this.state.wordsListToLearn.filter(function(element) { 
-                        return element.english !== english  })              
-      });
-      fetch( "http://bitex122.vot.pl/deletefromstatus.php?userid=9&engword=" + english); //tu brakuje statusu ale to z lenistwa
-    
-      }
+  setCurrentList_CallBack = (arr, listName) => {
+    this.setState({ wordsListToLearn: arr})
+    this.setState({ currentLearningList: listName})
+  }
+  
+  moveElement = (english) =>{
+    this.setState({ wordsListToLearn: addWordToSuite(this.state.wordsListToLearn,this.state.wordsList,english),
+                    wordsList: removeWordFromSuite(this.state.wordsList,english)
+                  });
+    let getWords = new GetWords();
+    getWords.addWordToSuite(english, this.state.currentLearningList)
+  }
+
+  moveElementBack = (english) =>{
+    this.setState({ wordsList: addWordToSuite(this.state.wordsList,this.state.wordsListToLearn,english),
+                    wordsListToLearn: removeWordFromSuite(this.state.wordsListToLearn,english)
+                  });
+    let getWords = new GetWords();
+    getWords.removeWordFromSuite(english)
+  }
 
   render() {
 
     return (
       
       <div className = "Manager"> 
-        <CompleteListsManager />
+
+        <CompleteListsManager/>
 
         <YourListsManager 
         setCurrentList_CallBack = {this.setCurrentList_CallBack}  />
+
         <CompleteListsContent 
         wordsList = {this.state.wordsList}
-        moveElement = {this.moveElement}
-        />
+        moveElement = {this.moveElement}/>
 
         <YourListsContent 
         wordsListToLearn = {this.state.wordsListToLearn} 
         currentLearningList = {this.state.currentLearningList}
         moveElementBack = {this.moveElementBack}/>
+
       </div>        
      );
    }

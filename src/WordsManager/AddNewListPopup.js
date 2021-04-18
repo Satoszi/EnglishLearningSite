@@ -1,6 +1,6 @@
 import React from 'react';
 import './manager.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 
 
 export class Popup extends React.Component{
@@ -12,9 +12,9 @@ export class Popup extends React.Component{
         }else {
             this.props.createList(document.getElementById("listNameInput").value)
         }
-        
+        document.getElementById("listNameInput").value = ""
     }
-    
+
     render(){
 
         return (
