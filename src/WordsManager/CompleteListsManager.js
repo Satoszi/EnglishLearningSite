@@ -1,6 +1,6 @@
 import React from 'react';
 import './manager.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 import ListObject from './ListObject'
 
 export class CompleteListsManager extends React.Component {
@@ -21,7 +21,7 @@ export class CompleteListsManager extends React.Component {
 }
   //TODO
 setCurrentList = (listName) => {
-  let getWords = new GetWords();
+  let getWords = new Api();
   let userId = 9;
   this.setState({currentList: listName})
   // TODO

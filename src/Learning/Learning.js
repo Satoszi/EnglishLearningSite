@@ -30,7 +30,8 @@ let boxesNumber = 5;
       this.setCurrentSet(suitesList[0]);
    }
 
-    /*a*/ howManyWordsPerSet(userId, suiteName){
+    /*a*/ howManyWordsPerSet = (suiteName) =>{
+      
       let getWords = new Api();
       getWords.howManyWordsPerSet(suiteName, this.setWordsNumberInSet_cb)
     }
@@ -48,8 +49,7 @@ let boxesNumber = 5;
 
     setCurrentSet = (suiteName) => {
       this.setState({suiteName: suiteName})
-      let userId = 9;
-      this.howManyWordsPerSet(userId, suiteName) 
+      this.howManyWordsPerSet(suiteName) 
       this.setCurrentFlashBoxAsync(0, suiteName);
     }
 
@@ -87,6 +87,8 @@ let boxesNumber = 5;
                 <div className="learningDiv">
                   <LearningCardBoxes 
                   callBackSetFlashBox = {this.setCurrentFlashBoxAsync}
+                  howManyWordsPerSet = {this.howManyWordsPerSet}
+                  suiteName = {this.state.currentSuite}
                   wordsListToLearn = {this.state.wordsListToLearn}
                   wordsNumberInFlashBox = {this.state.wordsNumberInFlashBox}
                   clicked = {this.state.flashBoxesFocusArr}

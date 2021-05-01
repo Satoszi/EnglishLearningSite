@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../index.css';
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
 import CompleteListsContent from './CompleteListsContent'
 import CompleteListsManager from './CompleteListsManager'
 import YourListsContent from './YourListsContent'
@@ -31,7 +31,7 @@ export class WordsManager extends React.Component {
   }
 
   async componentDidMount(){
-    let getWords = new GetWords();
+    let getWords = new Api();
     getWords.getAllWords(this.getWordsList_cb)
   }
 
@@ -46,7 +46,7 @@ export class WordsManager extends React.Component {
     this.setState({ wordsListToLearn: addWordToSuite(this.state.wordsListToLearn,this.state.wordsList,english),
                     wordsList: removeWordFromSuite(this.state.wordsList,english)
                   });
-    let getWords = new GetWords();
+    let getWords = new Api();
     getWords.addWordToSuite(english, this.state.currentLearningList)
   }
 
@@ -54,7 +54,7 @@ export class WordsManager extends React.Component {
     this.setState({ wordsList: addWordToSuite(this.state.wordsList,this.state.wordsListToLearn,english),
                     wordsListToLearn: removeWordFromSuite(this.state.wordsListToLearn,english)
                   });
-    let getWords = new GetWords();
+    let getWords = new Api();
     getWords.removeWordFromSuite(english)
   }
 

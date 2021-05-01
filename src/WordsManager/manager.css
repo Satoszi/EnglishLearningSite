@@ -92,12 +92,15 @@
 
 .yourList {
     float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 170px;
     height: 45px;
     border-radius: 15px;
     box-shadow: 3px 3px 5px grey;
     background-color: rgb(243, 243, 243);
-    font-size: 15px;
+    font-size: 18px;
     margin: 20px;
     margin-right: 0px;
     margin-bottom: 5px;
@@ -111,7 +114,8 @@
 }
 
 .yourListChoosen {
-    font-size: 25px;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .yourListContainer{

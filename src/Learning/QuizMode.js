@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Api from '../Api/Api.js'
 import '../index.css';
 import './learning.css';
 
@@ -15,7 +16,6 @@ class Translating extends React.Component {
     }
   
     markIfKnown(ifKnown){
-        console.log("wywoluje")
         if (ifKnown === 0) this.props.popNotKnownWord(this.props.english)
         if (ifKnown === 1) this.props.appendKnownWord(this.props.english)
         this.setState({ifKnown: ifKnown})
@@ -64,43 +64,27 @@ class Translating extends React.Component {
     appendKnownWord = (knownWord) => {
         if (!this.state.isWordKnownList.includes(knownWord))
         this.setState({ isWordKnownList: this.state.isWordKnownList.concat(knownWord) });
-        console.log("appendKnownWord = " + this.state.isWordKnownList)
     }
 
     popNotKnownWord = (knownWord) => {
         this.setState({isWordKnownList: this.state.isWordKnownList.filter(function(element) { 
         return element !== knownWord  }) });
-        console.log("popNotKnownWord = " + this.state.isWordKnownList)
     }
 
-    moveWordsToProperFlashBoxInDatabase = () => {
 
-        let userId = 9;
-        let words = [];
-        for (var key in this.state.isWordKnownList){
-          words[key.toString()] = this.state.isWordKnownList[key]
-        }
-
-        let data = {'words': words, 'userid': 9};
-
-        let url = "http://bitex122.vot.pl/moveWordsToProperFlashBox.php"
-
-        fetch(url, {
-            method: "post", 
-            headers: {
-                //'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-            body: JSON.stringify(data)
-          })
-                  
-
+    moveWordsToProperFlashBox = () => {
+      const api = new Api()
+      api.moveWordsToProperFlashBox(this.state.isWordKnownList)
     }
 
     saveTest = () => {
-        this.moveWordsToProperFlashBoxInDatabase()
+        this.moveWordsToProperFlashBox()
         this.props.changeModeToLearning_CallBack();
     }
+
+    cancelTest = () => {
+      this.props.changeModeToLearning_CallBack();
+  }
 
     render() {
       let wordsListToShow = null
@@ -116,9 +100,15 @@ class Translating extends React.Component {
     })
       return (
         <div> 
+          <div className="testButtonsContainer">
           <div  className = "startTestButton" 
                 onClick = {() => this.saveTest()}> 
-                Save Test 
+                Save 
+          </div>
+          <div  className = "startTestButton cancelButton" 
+                onClick = {() => this.cancelTest()}> 
+                Cancel 
+          </div>
           </div>
           {wordsListToShow}
         </div>        

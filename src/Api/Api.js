@@ -5,8 +5,9 @@ export class Api  {
     async getAllWords(cb){
       let rangeFrom = 100;
       let rangeTo = 215
+      let pathname = "getuserwordsnotlearned.php"
       //const url = API.BASE_URL + 'getuserwordsnotlearned.php?userid=${userId}&from= ' + rangeFrom + "&to= " + rangeTo;
-      const url = new URL (API.BASE_URL + "getuserwordsnotlearned.php")
+      const url = new URL (API.BASE_URL + pathname)
       url.searchParams.append("userid", userId)
       url.searchParams.append("from", rangeFrom)
       url.searchParams.append("to", rangeTo)
@@ -17,17 +18,6 @@ export class Api  {
       const arr = []
       for (var key in data) arr.push({english: key, polish: data[key] })
       cb(arr)
-    }
-
-    async addWordToSuite(english, Suite){
-      const url = API.BASE_URL + "insertwordtoset.php?userid=" + userId + "&engword=" + english + "&setname=" + Suite;
-      fetch(url);
-    }
-
-    async removeWordFromSuite(english, Suite){
-      
-      const url = API.BASE_URL + "deletefromstatus.php?userid=" + userId + "&engword=" + english; //Nie trzeba statusu
-      fetch(url);
     }
 
 
@@ -59,6 +49,7 @@ export class Api  {
 
 
     async howManyWordsPerSet(setName, callBack){
+      
       const url = API.BASE_URL + "howManyWordsPerSet.php?userid=" + userId + "&setname=" + setName;
 
       const response = await fetch(url);
@@ -68,14 +59,15 @@ export class Api  {
       for (var key in data){
         arr.push(data[key]);
       }
-
+      
       callBack(arr);
     }
 
 
     async getSets(callBack){
 
-      const response = await fetch(API.BASE_URL + "getsets.php?userid=" + userId);
+      const url = API.BASE_URL + "getsets.php?userid=" + userId;
+      const response = await fetch(url);
       const data = await response.json();
 
       const arr = []
@@ -84,6 +76,33 @@ export class Api  {
       }
       
       callBack(arr)
+    }
+
+    async moveWordsToProperFlashBox(isWordKnownList){
+      const url = API.BASE_URL + "moveWordsToProperFlashBox.php";
+
+      let words = [];
+      for (var key in isWordKnownList) words[key.toString()] = isWordKnownList[key]
+      let data = {'words': words, 'userid': userId};
+
+      fetch(url, {
+          method: "post", 
+          headers: {
+              'Content-Type': 'application/json',
+            },
+          body: JSON.stringify(data)
+        })
+
+    }
+
+    async addWordToSuite(english, Suite){
+      const url = API.BASE_URL + "insertwordtoset.php?userid=" + userId + "&engword=" + english + "&setname=" + Suite;
+      fetch(url);
+    }
+
+    async removeWordFromSuite(english){
+      const url = API.BASE_URL + "deletefromstatus.php?userid=" + userId + "&engword=" + english; //Nie trzeba statusu
+      fetch(url);
     }
 
     newSet = (setName) => {
