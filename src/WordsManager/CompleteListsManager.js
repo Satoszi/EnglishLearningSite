@@ -17,7 +17,7 @@ export class CompleteListsManager extends React.Component {
 
   //for now
   async componentDidMount(){
-    this.setState({sets: ["L1","L2","L3","L4","L5","L6","L7","L8",]})
+    this.setState({sets: ["C2 Words","C1 Words","B2 Words","B1 Words","A2 Words","A1 Words","Life vocab","IT vocab","Another List",]})
 }
   //TODO
 setCurrentList = (listName) => {
@@ -43,7 +43,7 @@ setCurrentList = (listName) => {
       return (
         <div className = "CompleteListsManager"> 
         <div className = "managerMiniBar" > Complete Lists Manager </div>
-        
+        <span style={{color: "red"}}> View is not implemented yet </span>
         {setsListToShow}
 
          </div>     

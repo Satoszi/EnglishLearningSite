@@ -81,8 +81,13 @@ let boxesNumber = 5;
 
       return (
         <div> 
+          <span style={{color: "red", fontSize: "14px"}}> View is not ready yet </span>
             <div style={{display:"flex"}}>
-                <div className="sets"> {suitesList} </div>
+                
+                <div className="sets"> 
+                
+                {suitesList} 
+                </div>
 
                 <div className="learningDiv">
                   <LearningCardBoxes 

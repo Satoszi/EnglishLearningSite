@@ -63,7 +63,7 @@ export class WordsManager extends React.Component {
     return (
       
       <div className = "Manager"> 
-
+        
         <CompleteListsManager/>
 
         <YourListsManager 

@@ -24,7 +24,7 @@ class FlashBox extends React.Component {
         <div className="cardBoxTitle"> Box {this.props.boxNumber + 1} </div>
         <div >
         Words left: {this.props.wordsNumber} <br/>
-        Quiz time in: {this.props.testTime} h
+        Test availavle in: {this.props.testTime} h
         </div>
 
       </div>        

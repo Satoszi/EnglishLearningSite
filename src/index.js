@@ -11,7 +11,7 @@ function ReturnView (props){
   if (props.viewName == 'Choosing')
     return <WordsManager/>
   if (props.viewName == 'Dashboard')
-    return <div>View not implemented yet</div>
+    return <span style={{color: "red"}}> View is not implemented yet </span>
 }
 
 class LearningSite extends React.Component {   
