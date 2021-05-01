@@ -1,0 +1,231 @@
+.Manager {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(233, 233, 233);
+}
+
+:root {
+    --ManageContainersColor: #fafafa;
+  }
+
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--ManageContainersColor);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+.CompleteListsManager{
+    margin: 0.5%;
+    width: 39%;
+    height: 350px;
+    margin-bottom: 0px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    
+}
+
+.YourListsManager{
+    margin: 0.5%;
+    width: 60%;
+    height: 350px;
+    margin-bottom: 0px; 
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    box-shadow: inset -5px -10px 10px #ffffff
+}
+
+.CompleteListsContent{
+    margin: 0.5%;
+    width: 39%;
+    height: 590px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.YourListsContent{
+    margin: 0.5%;
+    width: 60%;
+    height: 590px;
+    background-color: var(--ManageContainersColor);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.listsContentWords{
+    overflow-y: scroll;
+    height: 540px;
+}
+
+.listsManagers{
+    overflow-y: scroll;
+    height: 540px;
+}
+
+.managerMiniBar {
+    width: 100%;
+    height: 30px;
+    border-bottom: dotted rgb(189, 189, 189) 1px;
+    font-size: 25px;
+}
+
+.yourList {
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 45px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px grey;
+    background-color: rgb(243, 243, 243);
+    font-size: 18px;
+    margin: 20px;
+    margin-right: 0px;
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.yourList:hover {
+    background-color: rgb(238, 238, 238);
+}
+
+.yourListChoosen {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.yourListContainer{
+    float: left;
+    width: 220px;
+    height: 70px;
+    margin: 1px;
+}
+
+.addNew {
+    font-size: 25px;
+    color:rgb(255, 255, 255);
+    background-color: rgb(83, 186, 255);
+    background-image: linear-gradient(to bottom right, rgb(36, 156, 236), rgb(93, 190, 255));
+}
+
+.addNew:hover {
+    background-image: linear-gradient(to bottom right, rgb(66, 173, 245), rgb(119, 201, 255));
+}
+
+.popup{
+    position: absolute;
+    cursor:default;
+    height: 77px;
+    width: 345px;
+    background-image: linear-gradient(to bottom right, rgba(223, 223, 223, 0.877), rgba(240, 240, 240, 0.89));
+    left: 38%;
+    top: 18%;
+    border-radius: 15px;
+    box-shadow: 10px 10px 8px #c8c8c8;
+    transition: 0.1s;
+    visibility: hidden;
+    z-index: 1;
+}
+
+.createListInput{
+    float:left;
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 20px;
+    color: rgb(51, 51, 51);
+    height: 30px;
+    width: 200px;
+    background-color: rgb(255, 255, 255);   
+    border: none;
+}
+
+.createButtonContainer{
+    float:left;
+    margin-top: 20px;
+}
+.createButton{
+    float: left;
+    text-align: center;
+    display:table-cell;
+    vertical-align: middle;
+    margin-left: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgb(160, 160, 160);
+    font-size: 24px;
+    color: rgb(51, 51, 51);
+    height: 32px;
+    width: 75px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-image: linear-gradient(to bottom right, rgb(36, 156, 236), rgb(93, 190, 255));
+    color: white;
+    cursor: pointer;
+}
+
+.createButton:hover{
+    font-size: 25px;
+    background-image: linear-gradient(to bottom right, rgb(66, 173, 245), rgb(119, 201, 255));
+}
+
+.exitButton{
+    float: left;
+    position: relative;
+    text-align: center;
+    left: 10px;
+    bottom: 28px;
+    font-size: 22px;
+    color: rgb(51, 51, 51);
+    height: 23px;
+    width: 23px;
+    border-radius: 14px;
+    color: white;
+    background-color: rgba(93, 93, 93, 0.486);   
+    cursor: pointer;
+}
+
+
+.removeButton{
+    position: relative;
+    text-align: center;
+    float: left;
+    font-size: 19px;
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(204, 30, 30); 
+    cursor: pointer;
+}
+
+.removeButton:hover{
+    background-color: rgb(245, 39, 39); 
+}
+
+.removeListButton{
+    left: -15px;
+    bottom: -15px;
+}

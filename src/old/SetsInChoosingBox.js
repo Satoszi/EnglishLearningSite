@@ -1,6 +1,6 @@
 import React from "react";
 import './index.css';
-import GetWords from './Api/Api.js';
+import Api from '../Api/Api.js';
 
 
 
@@ -11,7 +11,7 @@ export class SetsInChoosingBox extends React.Component{
     }
 
     CreateSet = (userId, setName) => {
-        let createSet = new GetWords();
+        let createSet = new Api();
         let id = "SetInput"
         setName = document.getElementById(id).value;
         createSet.newSet(userId, setName)
@@ -24,7 +24,7 @@ export class SetsInChoosingBox extends React.Component{
     }
 
     async componentDidMount(){
-        let createSet = new GetWords();
+        let createSet = new Api();
         let userId = 9
         createSet.getSets(userId, this.CallBackSets)
     }

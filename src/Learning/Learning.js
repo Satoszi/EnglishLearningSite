@@ -3,107 +3,101 @@ import ReactDOM from 'react-dom';
 import '../index.css';
 import './learning.css';
 import LearningCardBoxes from './LearningCardBoxes'
-import SetsInLearningSets from './SetInLearningSets'
-import GetWords from '../Api/Api.js';
+import Api from '../Api/Api.js';
+import ListObject from '../WordsManager/ListObject'
 
 let boxesNumber = 5;
 
   export class LearningWords extends React.Component {
     
     state = { 
-      setName: "",
       wordsListToLearn: [],
-      wordsNumberInSet:[],
-      sets: [],
-      clicked: [],
+      wordsNumberInFlashBox:[],
+      suites: [],
+      flashBoxesFocusArr: [],
+      currentSuite: null,
     }
 
-    //*********** Troche tu nagmatwane bo trzeba sie zastanowić czy te async są potrzebne
-    // jesli są to muszą być wywołane z innej funkcji
-
-    setWordsNumberInSet = (arr) => {
-      this.setState({ wordsNumberInSet: arr})
-    }
-    setWordsListToLearn = (arr) => {
-      this.setState({ wordsListToLearn: arr})
+    /*a*/ componentDidMount(){
+      this.GetSuitesList()
     }
 
-    /*async*/ howManyWordsPerSet(userId, setName){
-      let getWords = new GetWords();
-      getWords.howManyWordsPerSet(userId, setName, this.setWordsNumberInSet)
-    }
+    setWordsNumberInSet_cb = (wordsList) => { this.setState({ wordsNumberInFlashBox: wordsList}) }
+    setWordsListToLearn_cb = (wordsList) => { this.setState({ wordsListToLearn: wordsList}) }
+    handleGetWordsList_cb = (suitesList) => {
+      this.setState({suites: suitesList,
+                     currentSuite: suitesList[0]});
+      this.setCurrentSet(suitesList[0]);
+   }
 
-    /*async*/ wordsToLearnBySetAndState(setName1, state){
-      let getWords = new GetWords();
-      getWords.wordsToLearnBySetAndState(9, state, setName1, this.setWordsListToLearn)
-    }
-    setCurrentSetAsync = (setName1) => {
-      console.log("set changed to " + setName1)
-      this.setState({setName: setName1})
-      this.wordsToLearnBySetAndState(setName1, 0)
-      let userId = 9;
-      this.howManyWordsPerSet(userId, setName1) 
-      this.callBackSetFlashBox(0);
-
-    }
-    setCurrentFlashBoxAsync = (boxNumber) => {
-      this.wordsToLearnBySetAndState(this.state.setName, boxNumber)
-      this.callBackSetFlashBox(boxNumber)
-    }
-
-    CallBackSetsList = (arr) => {
-      this.setState({sets: arr,
-                     setName: arr[0]});
-      this.setCurrentSetAsync(arr[0]);
+    /*a*/ howManyWordsPerSet = (suiteName) =>{
       
-  }
-
-
-  callBackSetFlashBox = (boxNumber) => {
-
-    let clickedArr = this.state.clicked
-    for (let i = 0; i < boxesNumber; i++){
-      clickedArr[i] = false
+      let getWords = new Api();
+      getWords.howManyWordsPerSet(suiteName, this.setWordsNumberInSet_cb)
     }
-    clickedArr[boxNumber] = true
-    this.setState({clicked: clickedArr})
 
-  }
+    /*a*/ wordsToLearnBySetAndState(suiteName, state){
+      let getWords = new Api();
+      getWords.wordsToLearnBySetAndState(state, suiteName, this.setWordsListToLearn_cb)
+    }
 
-  async componentDidMount(){
-      let getSetsList = new GetWords();
-      let userId = 9
-      getSetsList.getSets(userId, this.CallBackSetsList)
+    // z malej
+    GetSuitesList(){
+      let getSuitesList = new Api();
+      getSuitesList.getSets(this.handleGetWordsList_cb)
+    }
 
-      let clickedArr = []
-      clickedArr.push(true)
-      for (let i = 0; i < boxesNumber; i++){
-        clickedArr.push(false)
-      }
-      this.setState({clicked: clickedArr})
+    setCurrentSet = (suiteName) => {
+      this.setState({suiteName: suiteName})
+      this.howManyWordsPerSet(suiteName) 
+      this.setCurrentFlashBoxAsync(0, suiteName);
+    }
+
+    setCurrentFlashBoxAsync = (boxNumber, currentSuite = this.state.currentSuite) => {
+      this.wordsToLearnBySetAndState(currentSuite, boxNumber)
+      let flashBoxesFocusArr = this.state.flashBoxesFocusArr
+      flashBoxesFocusArr.fill(false)[boxNumber] = true
+      this.setState({flashBoxesFocusArr: flashBoxesFocusArr})
+    }
+
+  handleSetCurrentSuite = (suiteName) => {
+    this.setCurrentSet(suiteName);
+    this.setState({currentSuite: suiteName})
   }
 
     render() {
 
+      let suitesList = this.state.suites.map(suiteName => {return (
+        <div 
+            key = {suiteName}>
+            <ListObject 
+            listName = {suiteName}
+            listNameClicked = {this.state.currentSuite}
+            clickedList = {this.handleSetCurrentSuite}
+            removeList = {this.removeList}
+            isExitButton = {false}/>
+        </div>)
+      })
+
       return (
         <div> 
-            {/* <div className="choosingTitle"> Learning words </div> */}
+          <span style={{color: "red", fontSize: "14px"}}> View is not ready yet </span>
             <div style={{display:"flex"}}>
-                <div className="sets">
-                  <SetsInLearningSets 
-                  wordsToLearnBySetAndState = {this.setCurrentSetAsync} 
-                  sets = {this.state.sets} /> 
+                
+                <div className="sets"> 
+                
+                {suitesList} 
                 </div>
 
-                 <div className="learningDiv">
+                <div className="learningDiv">
                   <LearningCardBoxes 
-    
                   callBackSetFlashBox = {this.setCurrentFlashBoxAsync}
+                  howManyWordsPerSet = {this.howManyWordsPerSet}
+                  suiteName = {this.state.currentSuite}
                   wordsListToLearn = {this.state.wordsListToLearn}
-                  wordsNumberInSet = {this.state.wordsNumberInSet}
-                  clicked = {this.state.clicked}
+                  wordsNumberInFlashBox = {this.state.wordsNumberInFlashBox}
+                  clicked = {this.state.flashBoxesFocusArr}
                   boxesNumber = {boxesNumber} /> 
-                  
                 </div>
 
             </div>

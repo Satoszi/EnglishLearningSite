@@ -2,56 +2,55 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../index.css';
 import './learning.css';
-import GetWords from '../Api/Api.js';
-import LearningTest from './LearningTest.js';
+import Api from '../Api/Api.js';
+import QuizMode from './QuizMode.js';
+import {MODE} from '../constants.js';
 
-
-class CardBox extends React.Component {
+class FlashBox extends React.Component {
   
-
-  markBox(){
-    this.props.showBox(this.props.boxNumber)
-  }
+  markBox(){ this.props.showBox(this.props.boxNumber) }
 
   render() {
 
+    let high  = (100*this.props.wordsNumber)/this.props.sumWordsNumber
+    if (this.props.sumWordsNumber < 1) high = 0
     let clickedClass = "cardBox"
     let green = this.props.boxNumber * 60
-    
     let boxColor = "rgb(250, " + green + ", 0)"
-    if (this.props.clicked == true) clickedClass = "cardBox1"
+    if (this.props.clicked == true) clickedClass = "cardBox cardBoxClicked"
     return (
-      <div className={clickedClass} onClick={()=>this.markBox()} style={{background: boxColor}}> 
+      <div className={clickedClass} onClick={()=>this.markBox()} 
+        style={{background  : "linear-gradient(to top, " + boxColor + " " + high + "%, white "+ high +"%)"}}> 
         <div className="cardBoxTitle"> Box {this.props.boxNumber + 1} </div>
         <div >
         Words left: {this.props.wordsNumber} <br/>
-        Test time in: {this.props.testTime}
+        Test availavle in: {this.props.testTime} h
         </div>
+
       </div>        
     );
   }
 } 
 
-class CardBoxes extends React.Component {
+class FlashBoxes extends React.Component {
 
-  constructor(props) {
-    super(props);
-    // Nie wywołuj tutaj this.setState()!
-    this.state = { clicked: [],
-    timeUntilTestIsAvailable: [3,12,32,120,350] };
-  }
-
-
+    state = {
+      clicked: [],
+      timeUntilTestIsAvailable: [99,99,99,99,99] //Static Version
+    };
 
   render() {
     
     let cardBoxes = []
     for (let i = 0; i < this.props.boxesNumber; i++){
-      cardBoxes.push(<CardBox key={i}   
+      cardBoxes.push(<FlashBox key={i}   
                               showBox = {this.props.callBackSetFlashBox} 
                               boxNumber = {i}
                               clicked = {this.props.clicked[i]}
-                              wordsNumber = {this.props.wordsNumberInSet[i]}
+                              wordsNumber = {this.props.wordsNumberInFlashBox[i]}
+                              sumWordsNumber = {this.props.wordsNumberInFlashBox.length > 0 ? this.props.wordsNumberInFlashBox.reduce(function(a, b) {
+                                return a + b;
+                              }):0}
                               testTime = {this.state.timeUntilTestIsAvailable[i]} />)
     }
     return (
@@ -62,31 +61,28 @@ class CardBoxes extends React.Component {
   }
 } 
 
-class Translating extends React.Component {
+class TranslatingList extends React.Component {
   
   state = {
     marked: false
   }
 
-  markTranslating(){
-    this.setState({marked: !this.state.marked})
-    console.log(this.state.marked)
-  }
+  markTranslating(){ this.setState({marked: !this.state.marked}) }
 
   render() {
-    let wordsListToShow = null
-    let markedClassEng = "polishTranslating"
-    let markedClassPol = "englishTranslating"
+    
+    let markedClassEng = "wordInTranslatingEng"
+    let markedClassPol = "wordInTranslatingPol"
     if (this.state.marked == true){
-      markedClassEng = "polishTranslating englishTranslatingMarked"
-      markedClassPol = "englishTranslating polishTranslatingMarked"
+      markedClassEng = "wordInTranslatingEng englishTranslatingMarked"
+      markedClassPol = "wordInTranslatingPol polishTranslatingMarked"
     }
-    if (this.props.wordsListToShow !== null) 
-    wordsListToShow = 
-    <div onClick={()=>this.markTranslating()}  className="translating">
-      <div className={markedClassPol} >{this.props.english}</div> 
-      <div className={markedClassEng}>{this.props.polish}</div>
-      </div>
+
+    let wordsListToShow =
+    <div onClick={()=>this.markTranslating()}  className="translatingBox">
+      <div className={markedClassEng}> {this.props.english}</div> 
+      <div className={markedClassPol}> {this.props.polish}</div>
+    </div>
   
     return (
       <div> 
@@ -96,18 +92,25 @@ class Translating extends React.Component {
   }
 } 
 
-class LearningList extends React.Component {
+class LearnMode extends React.Component {
 
   render() {
-    let wordsListToShow = null
-    if (this.props.wordsListToShow !== null) 
-    wordsListToShow = this.props.wordsListToShow.map(e => {return (
-      <Translating key = {e.english} english = {e.english} polish = {e.polish} />
+    let translatingsListToShow = null
+    if (this.props.wordsList !== null) 
+      translatingsListToShow = this.props.wordsList.map(e => {return (
+      <TranslatingList  key = {e.english} 
+                        english = {e.english} 
+                        polish = {e.polish} />
       )
   })
     return (
       <div> 
-        {wordsListToShow}
+          <div className="testButtonsContainer">
+            <div  className = "startTestButton" onClick = {() => this.props.changeModeToTesting_cb()}> Start Test </div>
+          </div>
+          <div className = "learningField">
+              {translatingsListToShow}
+         </div>
       </div>        
     );
   }
@@ -117,105 +120,45 @@ class LearningList extends React.Component {
   export class LearningCardBoxes extends React.Component {
   
       state = {
-      mode: "learning",
+      mode:  MODE.learn,
       wordsListToLearn: [],
-      scrolled: window.pageYOffset
     }
 
-/*  
-    componentWillUnmount() {
-      // If this component is unmounted, stop listening
-      window.removeEventListener('scroll', this.handleScroll);
+    changeModeToTesting_cb = () => { this.setState({mode: MODE.quiz}) }
+    changeModeToLearning_cb = () => { 
+      this.setState({mode:  MODE.learn})
+      setTimeout(function(){
+        this.props.howManyWordsPerSet(this.props.suiteName);
+        this.props.callBackSetFlashBox(0);}.bind(this),100); 
+        
     }
 
-    handleScroll = () => {
-      const { lastScrollY } = this.state; 
-      const currentScrollY = window.scrollY;
-  
-      if (currentScrollY > lastScrollY) this.setState({ slide: '-48px' });
-      else this.setState({ slide: '0px' });
-      
-      this.setState({ lastScrollY: currentScrollY });
-      console.log(this.state.lastScrollY)
-    };
-
-    //do usuniecia setStateFunc2
-
-    
-    e
-    
-    setStateFunc2 = (arr, stateVar) => {
-      switch(stateVar) {
-        case "wordsList":
-          this.setState({ wordsList: arr})
-          break;
-        case "wordsListToLearn":
-          this.setState({ wordsListToLearn: arr})
-          break;
-      }
-    }
-
-    setStateFunc = (arr) => {
-      this.setState({ wordsListToLearn: arr})
-    }
-
-    async getWordsToLearn(){
-      let getWords = new GetWords();
-      //getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status=0", "wordsListToLearn", this.setStateFunc)
-      getWords.wordsToLearnBySet(9, 0, this.props.setName, this.setStateFunc)
-      window.addEventListener('scroll', this.handleScroll); //listening to scroll
-    }
-
-    async componentDidMount(){
-      this.getWordsToLearn();
-    }
-    
-    showSet = (boxNumber) => {
-      let getWords = new GetWords();
-      getWords.getAp("http://bitex122.vot.pl/getuserwordsbystatus.php?userid=9&status="+ boxNumber, "wordsListToLearn", this.setStateFunc);
-    }
-    */
-    changeModeToTesting = () => {
-      this.setState({mode: "testing"})
-    }
-
-    changeModeToLearning_CallBack = () => {
-      this.setState({mode: "learning"})
-    }
     render() {
 
       let mode = null;
-      if (this.state.mode === "learning") mode = <LearningList wordsListToShow = {this.props.wordsListToLearn}/>
-      else mode =  <LearningTest 
-                    wordsListToShow = {this.props.wordsListToLearn}
-                    changeModeToLearning_CallBack = {this.changeModeToLearning_CallBack} />
-
+      if (this.state.mode ===  MODE.learn) 
+            mode = <LearnMode 
+                    wordsList = {this.props.wordsListToLearn}
+                    changeModeToTesting_cb = {this.changeModeToTesting_cb}/>
+      else  mode =  <QuizMode
+                    wordsList = {this.props.wordsListToLearn}
+                    changeModeToLearning_CallBack = {this.changeModeToLearning_cb} />
       
-      let hide = "navbar"
-      if (this.state.lastScrollY > 500) hide = "navbar1"
-
       return (
         <div> 
-          <CardBoxes 
+          <FlashBoxes 
           callBackSetFlashBox={this.props.callBackSetFlashBox}
-          wordsNumberInSet = {this.props.wordsNumberInSet}
+          wordsNumberInFlashBox = {this.props.wordsNumberInFlashBox}
           clicked = {this.props.clicked}
           boxesNumber = {this.props.boxesNumber} />
+
           <div className="learningBox">
+                
 
-            <div className="learningCardBoxesMenu">
-
-            
-                <div  className = "startTestButton" onClick = {() => this.changeModeToTesting()}> Start Test
-                <div id={hide}>
-                  <div className = "startTestButton1"> Start Test </div>
-                </div>
-                </div>
-            </div>  
-
-            <div> {mode} </div>
-
+            {/*<div>*/} {mode} {/*<div>*/} 
+             
           </div>
+          
         </div>        
       );
     }

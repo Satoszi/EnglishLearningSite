@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Api from '../Api/Api.js'
 import '../index.css';
 import './learning.css';
 
@@ -15,7 +16,6 @@ class Translating extends React.Component {
     }
   
     markIfKnown(ifKnown){
-        console.log("wywoluje")
         if (ifKnown === 0) this.props.popNotKnownWord(this.props.english)
         if (ifKnown === 1) this.props.appendKnownWord(this.props.english)
         this.setState({ifKnown: ifKnown})
@@ -36,7 +36,7 @@ class Translating extends React.Component {
             markedClassPol = "englishTranslating polishTranslatingMarked"
         }
 
-        if (this.props.wordsListToShow !== null) 
+        if (this.props.wordsList !== null) 
         wordsListToShow = 
         <div className="testChecking">
             <div onClick={()=>this.markTranslating()}  className="testTranslating">
@@ -55,79 +55,65 @@ class Translating extends React.Component {
     }
   } 
   
-  export class LearningTest extends React.Component {
+  export class QuizMode extends React.Component {
     
     state = {
-        ifKnownWordArr: []
+        isWordKnownList: []
     }
 
     appendKnownWord = (knownWord) => {
-        if (!this.state.ifKnownWordArr.includes(knownWord))
-        this.setState({ ifKnownWordArr: this.state.ifKnownWordArr.concat(knownWord) });
-        console.log("appendKnownWord = " + this.state.ifKnownWordArr)
+        if (!this.state.isWordKnownList.includes(knownWord))
+        this.setState({ isWordKnownList: this.state.isWordKnownList.concat(knownWord) });
     }
 
     popNotKnownWord = (knownWord) => {
-        this.setState({ifKnownWordArr: this.state.ifKnownWordArr.filter(function(element) { 
+        this.setState({isWordKnownList: this.state.isWordKnownList.filter(function(element) { 
         return element !== knownWord  }) });
-        console.log("popNotKnownWord = " + this.state.ifKnownWordArr)
     }
 
-    moveWordsToProperFlashBoxInDatabase = () => {
 
-        let userId = 9;
-        let words = [];
-        for (var key in this.state.ifKnownWordArr){
-          words[key.toString()] = this.state.ifKnownWordArr[key]
-        }
-
-        let data = {'words': words, 'userid': 9};
-
-        let url = "http://bitex122.vot.pl/moveWordsToProperFlashBox.php"
-
-        fetch(url, {
-            method: "post", 
-            headers: {
-                //'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-            body: JSON.stringify(data)
-          })
-          //.then(res => {
-          //  console.log("Request complete! response:", res);
-          //}).catch((error) => {
-          //  console.error('Error:', error);
-          //});
-
+    moveWordsToProperFlashBox = () => {
+      const api = new Api()
+      api.moveWordsToProperFlashBox(this.state.isWordKnownList)
     }
 
     saveTest = () => {
-        this.moveWordsToProperFlashBoxInDatabase()
+        this.moveWordsToProperFlashBox()
         this.props.changeModeToLearning_CallBack();
     }
 
+    cancelTest = () => {
+      this.props.changeModeToLearning_CallBack();
+  }
+
     render() {
       let wordsListToShow = null
-      if (this.props.wordsListToShow !== null) 
-      wordsListToShow = this.props.wordsListToShow.map(e => {return (
-            
+      if (this.props.wordsList !== null) 
+      wordsListToShow = this.props.wordsList.map(e => {return (
             <Translating 
             key = {e.english} 
             english = {e.english} 
             polish = {e.polish} 
             appendKnownWord = {this.appendKnownWord}
             popNotKnownWord = {this.popNotKnownWord} />
-
         )
     })
       return (
         <div> 
+          <div className="testButtonsContainer">
           <div  className = "startTestButton" 
-                onClick = {() => this.saveTest()}> Stop Test </div>
+                onClick = {() => this.saveTest()}> 
+                Save 
+          </div>
+          <div  className = "startTestButton cancelButton" 
+                onClick = {() => this.cancelTest()}> 
+                Cancel 
+          </div>
+          </div>
           {wordsListToShow}
         </div>        
       );
     }
   } 
 
-  export default LearningTest
+  export default QuizMode
